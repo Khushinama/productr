@@ -1,7 +1,7 @@
 import express from 'express'
 import { checkAuth, isAuthenticated, sendOtp, logout, register, sendResetOtp,  uploadProfilePic, verifyEmail } from '../controllers/authController.js'
 import protect from '../middleware/authMiddleware.js'
-import { uploadProfileImage } from "../config/multerConfig.js";
+import { uploadProfileImage } from "../config/multerconfig.js";
 
 const authRouter = express.Router()
 

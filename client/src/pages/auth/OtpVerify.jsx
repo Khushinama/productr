@@ -1,71 +1,134 @@
-import { useState } from "react";
-import React from "react";
-import { verifyOtp } from "../../api/authApi";
-import { useAuth } from "../../context/AuthContext";
+import React, { useEffect, useRef, useState } from "react";
+import { verifyOtp, resendOtp } from "../../api/authApi";
+import toast from 'react-hot-toast'
 
-const OtpVerify = ({ email, onVerified }) => {
-  const [otp, setOtp] = useState("");
+const VerifyOtp = ({ email, onVerified }) => {
+  const [otp, setOtp] = useState(Array(6).fill(""));
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [timer, setTimer] = useState(20);
+  const inputsRef = useRef([]);
 
-  const { setUser } = useAuth();
+  useEffect(() => {
+    if (timer <= 0) return;
+    const interval = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [timer]);
 
-  const handleVerify = async () => {
+  const handleChange = (value, index) => {
+    if (!/^\d?$/.test(value)) return;
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
     setError("");
+    if (value && index < 5) inputsRef.current[index + 1].focus();
+  };
 
-    if (otp.length !== 6) {
-      setError("Enter valid 6-digit OTP");
-      return;
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      inputsRef.current[index - 1].focus();
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const finalOtp = otp.join("");
+    if (finalOtp.length !== 6)
+      return setError("Please enter 6 digit OTP");
 
     try {
       setLoading(true);
-
-      const res = await verifyOtp(email, otp);
-
+      toast.loading("Verifying OTP...");
+      const res = await verifyOtp(email, finalOtp);
+      
       if (res.success) {
-        // ✅ STORE USER GLOBALLY
-        setUser(res.user);
-
-        // ✅ REDIRECT TO DASHBOARD
-        onVerified();
+        toast.success("OTP verified successfully");
+        onVerified(res.user);
       } else {
-        setError(res.message || "Invalid OTP");
+        setError(res.message);
+        toast.error(res.message);
       }
     } catch (err) {
-      setError(err.response?.data?.message || "OTP verification failed");
+      setError("Invalid OTP");
+      toast.error("Failed to verify OTP");
     } finally {
       setLoading(false);
     }
   };
 
+  const handleResend = async () => {
+    try {
+      const res = await resendOtp(email);
+      if (res.success) {
+        setTimer(20);
+        setOtp(Array(6).fill(""));
+        inputsRef.current[0].focus();
+      }
+    } catch {
+      setError("Failed to resend OTP");
+    }
+  };
+
   return (
-    <>
-      <h2 className="text-2xl font-semibold text-blue-900 mb-6">
-        Enter OTP
-      </h2>
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="w-full max-w-md">
 
-      <input
-        value={otp}
-        onChange={(e) => setOtp(e.target.value)}
-        maxLength={6}
-        className="w-full px-4 py-2 border rounded-md text-center tracking-widest"
-        placeholder="123456"
-      />
+        <h2 className="text-2xl sm:text-3xl font-semibold text-blue-900 mb-6 text-center">
+          Verify OTP
+        </h2>
 
-      {error && (
-        <p className="text-red-500 text-sm mt-2">{error}</p>
-      )}
+        <form onSubmit={handleSubmit} className="text-center">
+          <p className="text-sm text-gray-500 mb-4 text-left">
+            Enter OTP sent to your email
+          </p>
 
-      <button
-        onClick={handleVerify}
-        disabled={loading}
-        className="w-full bg-blue-900 text-white py-2 rounded-md mt-4"
-      >
-        {loading ? "Verifying..." : "Verify OTP"}
-      </button>
-    </>
+          <div className="flex justify-center gap-2 sm:gap-3 mb-4 flex-wrap">
+            {otp.map((digit, index) => (
+              <input
+                key={index}
+                ref={(el) => (inputsRef.current[index] = el)}
+                value={digit}
+                maxLength={1}
+                onChange={(e) => handleChange(e.target.value, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                className={`w-11 h-11 sm:w-12 sm:h-12 text-center text-lg border rounded-md focus:outline-none focus:ring-2 ${
+                  error ? "border-red-500" : "focus:ring-blue-900"
+                }`}
+              />
+            ))}
+          </div>
+
+          {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+
+          <button
+            disabled={loading}
+            className="w-full bg-blue-900 text-white py-3 rounded-md"
+          >
+            {loading ? "Verifying..." : "Verify OTP"}
+          </button>
+
+          <p className="text-sm text-gray-500 mt-4">
+            Didn’t receive OTP?{" "}
+            {timer > 0 ? (
+              <span className="text-blue-900 font-semibold">
+                Resend in {timer}s
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={handleResend}
+                className="text-blue-900 font-semibold underline"
+              >
+                Resend OTP
+              </button>
+            )}
+          </p>
+        </form>
+      </div>
+    </div>
   );
 };
 
-export default OtpVerify;
+export default VerifyOtp;

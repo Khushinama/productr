@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
+import Layout from "../components/layout/Layout";
 import React from "react";
 import AuthPage from "../pages/auth/AuthPage";
 import Dashboard from "../pages/dashboard/Dashboard";
@@ -18,7 +19,9 @@ const AppRoutes = () => {
   path="/dashboard"
   element={
     <PrivateRoute>
-      <Dashboard />
+      <Layout>
+        <Dashboard />
+      </Layout>
     </PrivateRoute>
   }
 />
@@ -27,7 +30,9 @@ const AppRoutes = () => {
   path="/products"
   element={
     <PrivateRoute>
-      <Products />
+      <Layout>
+        <Products />
+      </Layout>
     </PrivateRoute>
   }
 />

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true,
 });
 
@@ -32,3 +32,7 @@ export const uploadProfilePic = (formData) =>
 // Logout
 export const logoutUser = () =>
   API.post("/auth/logout").then((res) => res.data);
+
+// Resend OTP
+export const resendOtp = (email) =>
+  API.post("/auth/send-reset-otp", { email }).then((res) => res.data);

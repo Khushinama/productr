@@ -7,7 +7,7 @@ import {
   deleteProduct,
   togglePublishProduct,
 } from "../controllers/productController.js";
-import { uploadProductImages } from "../config/multerConfig.js";
+import { uploadProductImages } from "../config/multerconfig.js";
 
 const router = express.Router();
 

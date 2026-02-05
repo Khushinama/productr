@@ -1,10 +1,12 @@
 import { X } from "lucide-react";
 import React from "react";
+import toast from 'react-hot-toast'
 
 export default function DeleteProductModal({ product, onClose, onConfirm }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl w-full max-w-md p-6 relative">
+      <div className="bg-white rounded-xl w-full max-w-md mx-4 p-5 sm:p-6 relative">
+
 
         <button
           onClick={onClose}
@@ -21,17 +23,20 @@ export default function DeleteProductModal({ product, onClose, onConfirm }) {
           <strong>“{product.name}”</strong>?
         </p>
 
-        <div className="flex justify-end gap-3">
+        <div className="flex flex-col sm:flex-row justify-end gap-3">
+
           <button
             onClick={onClose}
-            className="px-4 py-2 border rounded-md"
+            className="w-full sm:w-auto px-4 py-2 border rounded-md"
+
           >
             Cancel
           </button>
 
           <button
             onClick={() => onConfirm(product._id)}
-            className="px-4 py-2 bg-blue-900 text-white rounded-md"
+            className="w-full sm:w-auto px-4 py-2 bg-blue-900 text-white rounded-md"
+
           >
             Delete
           </button>

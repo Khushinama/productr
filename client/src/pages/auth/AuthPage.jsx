@@ -14,7 +14,7 @@ const AuthPage = () => {
       {/* LEFT IMAGE (HIDDEN ON MOBILE) */}
       <div className="hidden lg:block lg:w-1/2">
         <img
-          src="/public/Frame.jpeg"
+          src="/Frame.jpeg"
           alt="frame"
           className="w-full h-screen object-cover"
         />

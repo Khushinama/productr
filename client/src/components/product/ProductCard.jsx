@@ -26,7 +26,7 @@ export default function ProductCard({
         {images.length > 0 ? (
           <>
             <img
-              src={`http://localhost:5000/${images[current]}`}
+              src={`${import.meta.env.VITE_API_BASE_URL}/${images[current]}`}
               alt={product.productName}
               className="h-full object-contain"
             />

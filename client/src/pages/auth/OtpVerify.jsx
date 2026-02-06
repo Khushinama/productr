@@ -65,9 +65,12 @@ const VerifyOtp = ({ email, onVerified }) => {
         setTimer(20);
         setOtp(Array(6).fill(""));
         inputsRef.current[0].focus();
+        toast.success("OTP resent successfully");
+        toast.success(`Your new OTP is: ${res.otp}`);
       }
-    } catch {
+    } catch (err) {
       setError("Failed to resend OTP");
+      toast.error("Failed to resend OTP");
     }
   };
 

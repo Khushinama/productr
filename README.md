@@ -48,7 +48,7 @@ npm install
 npm start
 
 
-###Environment Variables -
+###Environment Variables (Backend) -
 
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
@@ -59,3 +59,7 @@ NODE_ENV = "development"
 SENDER_EMAIL=your_email_address
 SMTP_PASS=your_smtp_password
 CLIENT_URL=http://localhost:5173
+
+###Environment Variables (Frontend) -
+
+VITE_API_BASE_URL=http://localhost:5000/api

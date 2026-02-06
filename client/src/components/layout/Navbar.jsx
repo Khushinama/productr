@@ -1,4 +1,5 @@
 import { ChevronDown, LogOut, Upload } from "lucide-react";
+import { Menu } from "lucide-react";
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { logoutUser, uploadProfilePic } from "../../api/authApi";
@@ -31,8 +32,13 @@ export default function Navbar({ onMenuClick, searchTerm = "", setSearchTerm }) 
   return (
     <nav className="bg-gradient-to-r from-blue-50 via-white to-orange-50 border-b px-4 sm:px-6 py-3 flex items-center justify-between relative z-40">
 
-      {/* LEFT EMPTY */}
-      <div className="hidden sm:block w-40" />
+      {/* MOBILE MENU BUTTON */}
+<button
+  onClick={onMenuClick}
+  className="sm:hidden p-2 rounded-md hover:bg-gray-200"
+>
+  <Menu className="w-6 h-6 text-gray-700" />
+</button>
 
       {/* RIGHT */}
       <div className="flex items-center gap-3 sm:gap-4">
@@ -48,7 +54,8 @@ export default function Navbar({ onMenuClick, searchTerm = "", setSearchTerm }) 
         />
 
         {/* PROFILE */}
-        <div className="relative z-50">
+        <div className="absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-md border z-[999]">
+
           <button
             type="button"
             onClick={() => setOpen((prev) => !prev)}
@@ -57,7 +64,7 @@ export default function Navbar({ onMenuClick, searchTerm = "", setSearchTerm }) 
             {user?.profilePic ? (
               <img
                 src={`${import.meta.env.VITE_API_BASE_URL}/${user.profilePic}`}
-                className="w-8 h-8 rounded-full object-cover"
+                 className="w-8 h-8 rounded-full object-cover"
               />
             ) : (
               <div className="w-8 h-8 rounded-full bg-blue-900 text-white flex items-center justify-center font-semibold">

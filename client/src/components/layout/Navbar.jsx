@@ -55,7 +55,7 @@ export default function Navbar({ onMenuClick, searchTerm = "", setSearchTerm }) 
           >
             {user?.profilePic ? (
               <img
-                src={`http://localhost:5000/${user.profilePic}`}
+                src={`${import.meta.env.VITE_API_BASE_URL}/${user.profilePic}`}
                 className="w-8 h-8 rounded-full object-cover"
               />
             ) : (

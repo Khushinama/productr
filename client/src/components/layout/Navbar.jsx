@@ -43,7 +43,8 @@ export default function Navbar({ onMenuClick, searchTerm = "", setSearchTerm }) 
           placeholder="Search products"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="hidden sm:block w-56 px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+          className="block sm:w-56 w-40 px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+
         />
 
         {/* PROFILE */}

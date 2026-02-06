@@ -1,6 +1,14 @@
 import multer from "multer";
 import path from "path";
 import crypto from "crypto";
+import fs from "fs";
+
+const ensureDir = (dirPath) => {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+};
+
 
 // Generate unique filename
 const generateFileName = (originalName) => {
@@ -12,12 +20,15 @@ const generateFileName = (originalName) => {
 // ================= PROFILE IMAGE STORAGE =================
 const profileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/profile");
+    const uploadPath = "uploads/profile";
+    ensureDir(uploadPath);
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
     cb(null, generateFileName(file.originalname));
   },
 });
+
 
 const imageFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/")) {
@@ -34,14 +45,18 @@ export const uploadProfileImage = multer({
 });
 
 // ================= PRODUCT IMAGE STORAGE =================
+
 const productStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/products");
+    const uploadPath = "uploads/products";
+    ensureDir(uploadPath);
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
     cb(null, generateFileName(file.originalname));
   },
 });
+
 
 export const uploadProductImages = multer({
   storage: productStorage,

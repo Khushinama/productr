@@ -87,25 +87,15 @@ export const sendOtp = async (req, res) => {
     user.verifyOtpExpireAt = expiresAt;
     await user.save();
 
-    await transporter.sendMail({
-      to: user.email,
-      subject: "Your Verification OTP",
-      text: `Your OTP is ${otp}`,
-    });
-
-    res.json({ success: true, message: "OTP sent successfully" });
-
-    // SEND USER DATA
-    // res.json({
-    //   success: true,
-    //   message: "Login successfully",
-    //   user: {
-    //     id: user._id,
-    //     name: user.name,
-    //     email: user.email,
-    //     isVerified: user.isAccountVerified,
-    //   },
+    // await transporter.sendMail({
+    //   to: user.email,
+    //   subject: "Your Verification OTP",
+    //   text: `Your OTP is ${otp}`,
     // });
+
+    res.json({ success: true, message: "OTP sent successfully",otp });
+
+    
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -129,50 +119,7 @@ export const logout = async (req, res) => {
   }
 };
 
-// export const sendVerifyOtp = async (req, res) => {
-//   try {
-//     const { email } = req.body;
 
-//     if (!email) {
-//       return res
-//         .status(400)
-//         .json({ success: false, message: "Email is required" });
-//     }
-
-//     const user = await userModel.findOne({ email });
-
-//     if (!user) {
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "User not found" });
-//     }
-
-//     if (user.isAccountVerified) {
-//       return res
-//         .status(400)
-//         .json({ success: false, message: "Account already verified" });
-//     }
-
-//     // Generate OTP
-//     const otp = String(Math.floor(100000 + Math.random() * 900000));
-//     const expiresAt = Date.now() + 10 * 60 * 1000;
-
-//     user.verifyOtp = otp;
-//     user.verifyOtpExpireAt = expiresAt;
-//     await user.save();
-
-//     await transporter.sendMail({
-//       to: user.email,
-//       subject: "Your Verification OTP",
-//       text: `Your OTP is ${otp}`,
-//     });
-
-//     res.json({ success: true, message: "OTP sent successfully" });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// };
 
 export const verifyEmail = async (req, res) => {
   try {
@@ -285,43 +232,6 @@ export const sendResetOtp = async (req, res) => {
 };
 
 
-//reset password 
-
-// export const  = async (req, res) => {
-//   const { email, otp } = req.body;
-
-//   if (!email || !otp ) {
-//     return res.json({ success: false, message: "Missing Details" });
-//   }
-
-//   try {
-//     const user = await userModel.findOne({ email });
-
-//     if (!user) {
-//       return res.json({ success: false, message: "User not found" });
-//     }
-
-//     if (user.resetOtp === "" || user.resetOtp !== otp) {
-//       return res.json({ success: false, message: " Invalid Otp" });
-//     }
-
-//     if (user.resetOtpExpiresAt < Date.now()) {
-//       return res.json({ success: false, message: "OTP Expired" });
-//     }
-
-//     user.resetOtp = "";
-//     user.resetOtpExpiresAt = 0;
-
-//     await user.save();
-
-//     res.json({
-//       success: true,
-//       message: "Password has been reset successfully.",
-//     });
-//   } catch (error) {
-//     res.json({ success: false, message: error.message });
-//   }
-// };
 
 
 // profile pic 

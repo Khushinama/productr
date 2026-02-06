@@ -223,7 +223,7 @@ export default function ProductForm({
               {existingImages.map((img, i) => (
                 <div key={i} className="relative">
                   <img
-                    src={`http://localhost:5000/${img}`}
+                    src={`${import.meta.env.VITE_API_BASE_URL}/${img}`}
                     className="w-14 h-14 sm:w-16 sm:h-16 rounded object-cover"
 
                   />

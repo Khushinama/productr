@@ -29,7 +29,9 @@ const Login = ({ onOtpSent, switchToRegister }) => {
       setLoading(true);
       toast.loading("Sending OTP...");
       const res = await sendOtp(email);
-      
+       toast.success(`Your OTP is: ${res.otp}`, {
+          duration: 8000,
+        });
 
       if (res.success) {
         toast.success("OTP sent successfully");

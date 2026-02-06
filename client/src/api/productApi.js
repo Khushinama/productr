@@ -10,13 +10,13 @@ const API = axios.create({
  * GET all products of logged-in user
  */
 export const getMyProducts = () =>
-  API.get("/products/my-products").then((res) => res.data);
+  API.get("/api/products/my-products").then((res) => res.data);
 
 /**
  * CREATE new product
  */
 export const createProduct = (formData) =>
-  API.post("/products", formData, {
+  API.post("/api/products", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -26,15 +26,15 @@ export const createProduct = (formData) =>
  * UPDATE product
  */
 export const updateProduct = (id, formData) =>
-  API.put(`/products/${id}`, formData, {
+  API.put(`/api/products/${id}`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   }).then(res => res.data);
 
 
 // DELETE PRODUCT ✅
 export const deleteProduct = (id) =>
-  API.delete(`/products/${id}`).then((res) => res.data);
+  API.delete(`/api/products/${id}`).then((res) => res.data);
 
 // TOGGLE PUBLISH ✅
 export const togglePublish = (id) =>
-  API.patch(`/products/${id}/toggle`).then(res => res.data);
+  API.patch(`/api/products/${id}/toggle`).then(res => res.data);

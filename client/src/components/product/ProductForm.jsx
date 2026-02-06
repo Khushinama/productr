@@ -216,7 +216,12 @@ export default function ProductForm({
           <div>
             <label className="text-sm font-medium">Upload Product Images</label>
             <div className="mt-1 border border-dashed rounded-md p-4 text-center">
-              <input type="file" multiple onChange={handleImages} />
+               <input
+                type="file"
+                name="images" // ✅ ADD THIS LINE
+                multiple
+                onChange={handleImages}
+              />
             </div>
 
             <div className="flex flex-wrap gap-3 mt-3">
